@@ -1,43 +1,40 @@
-import entities.*;
-
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.sql.*;
 
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
-    static ArrayList<Objeto> objs;
-    static ArrayList<Emprestimo> emprestimos;
-    static ArrayList<Manutencao> manutencoes;
-    static ArrayList<Tipo_Obj> tiposObj;
-    static ArrayList<Pessoa> pessoas;
-
+    static Connection conn = null;
 
     public static void main(String[] args) {
+        conectardb();
             String primTexto = "Sistema de empréstimos de objetos\n" +
                 "--------------------------------------\n" +
                 "1 - Cadastrar\n" +
-                "2 - Consultar (Não disponível)\n" +
+                "2 - Consultar\n" +
                 "3 - Alterar (Não disponível)\n" +
                 "4 - Excluir (Não disponível)\n" +
                 "5 - Realizar empréstimo (Não disponível)\n" +
                 "6 - Relatótios (Não disponível)\n" +
-                "7 - Sair\n" +
+                "7 - Sair\n"+
                 "Escolha a sua opção:";
         System.out.println(primTexto);
         int opcao = sc.nextInt();
         while (opcao !=7){
             switch(opcao) {
                 case 1:
-                    menuCadastro();
+                    Cadastro.menu(conn);
                     break;
-                /*case 2: //Código comentado para próxima entrega do trabalho, no código atual poderia ser trocado por um "if"
+                case 2:
+                    Consulta.menu(conn);
                     break;
                 case 3:
+                    Alterar.menu(conn);
                     break;
                 case 4:
+                    Excluir.menu(conn);
                     break;
-                case 5:
+                /*case 5://Código comentado para próxima entrega do trabalho, no código atual poderia ser trocado por um "if"
                     break;
                 case 6:
                     break; */
@@ -51,86 +48,16 @@ public class Main {
         System.exit(0);
     }
 
-    public static void menuCadastro(){
-        Scanner sc = new Scanner(System.in);
-        String primTexto = "\nSistema de empréstimos de objetos\n" +
-                "--------------------------------------\n" +
-                "1 - Pessoas\n" +
-                "2 - Tipos de objetos\n" +
-                "3 - Objetos\n" +
-                "4 - Manutenção\n" +
-                "5 - Sair\n" +
-                "Escolha a sua opção:";
-        System.out.println(primTexto);
-        int opcao = sc.nextInt();
-        while (opcao !=5){
-            switch (opcao){
-                case 1:
-                    cadastroPessoa();
-                    break;
-                case 2:
-                    cadastroTipoObj();
-                    break;
-                case 3:
-                    cadastroObjeto();
-                    break;
-                case 4:
-                    cadastroManutencao();
-                    break;
-                default:
-                    System.out.println("\nNúmero inválido! Tente novamente.\n\n");
-            }
-            System.out.println(primTexto);
-            opcao = sc.nextInt();
+    public static void conectardb(){
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlite:database.db");
+            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"EMPRESTIMO\" (\"CODIGO\" INTEGER, \"COD_OBJETO\" INTEGER, \"COD_PESSOA\" INTEGER, \"ESTADO\" TEXT, FOREIGN KEY(\"COD_PESSOA\") REFERENCES \"PESSOA\"(\"CODIGO\") ON DELETE CASCADE, FOREIGN KEY(\"COD_OBJETO\") REFERENCES \"OBJETO\"(\"CODIGO\") ON DELETE CASCADE, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
+            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"MANUTENCAO\" (\"CODIGO\" INTEGER, \"OBJETO\" INTEGER, \"ATIVO\" TEXT, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
+            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"OBJETO\" (\"CODIGO\"\tINTEGER, \"NOME\"\tTEXT, \"COD_TIPO_OBJETO\"\tINTEGER, \"SITUACAO\" TEXT, FOREIGN KEY(\"COD_TIPO_OBJETO\") REFERENCES \"TIPO_OBJETO\"(\"CODIGO\") ON DELETE CASCADE, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
+            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"PESSOA\" (\"CODIGO\"\tINTEGER, \"NOME\"\tTEXT, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
+            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"TIPO_OBJETO\" (\"CODIGO\" INTEGER, \"NOME\" INTEGER, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-    }
-
-    public static void cadastroPessoa(){
-        System.out.println("\nInclusão de pessoa:\nInsira o nome:");
-        String nome = sc.nextLine();
-        while(nome.isEmpty()){
-            System.out.println("Campo vazio! Use 'sair' ou insira o nome:");
-            nome = sc.nextLine();
-        }
-        if (nome.equals("sair")) return;
-        pessoas.add(new Pessoa(nome));
-    }
-
-    public static void cadastroTipoObj(){
-        System.out.println("\nInclusão de tipo de objeto:\nInsira o tipo:");
-        String tipo = sc.nextLine();
-        while(tipo.isEmpty()){
-            System.out.println("Campo vazio! Use 'sair' ou insira o tipo:");
-            tipo = sc.nextLine();
-        }
-        if (tipo.equals("sair")) return;
-        tiposObj.add(new Tipo_Obj(tipo));
-    }
-
-    public static void cadastroObjeto(){
-        System.out.println("\nInclusão de objeto:\nInsira o objeto:");
-        String objNome = sc.nextLine();
-        while(objNome.isEmpty()){
-            System.out.println("Campo vazio! Use 'sair' ou insira o objeto:");
-            objNome = sc.nextLine();
-        }
-        System.out.println("Insira o tipo do objeto:");
-        String objTipo = sc.nextLine();
-        while(objTipo.isEmpty()){
-            System.out.println("Campo vazio! Use 'sair' ou insira o tipo:");
-            objTipo = sc.nextLine();
-        }
-        if (objTipo.equals("sair")) return;
-        objs.add(new Objeto(objNome,objTipo));
-    }
-
-    public static void cadastroManutencao(){
-        System.out.println("\nInclusão de manutenção:\nInsira o objeto:");
-        String objNome = sc.nextLine();
-        while(objNome.isEmpty()){
-            System.out.println("Campo vazio! Use 'sair' ou insira o objeto:");
-            objNome = sc.nextLine();
-        }
-        manutencoes.add(new Manutencao(objNome));
     }
 }

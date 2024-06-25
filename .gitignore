@@ -1,5 +1,8 @@
 ### IntelliJ IDEA ###
-.idea
+.idea/
+.run/
+.out/
+*.db
 .gitignore
 out/
 !**/src/main/**/out/

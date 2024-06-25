@@ -1,29 +1,32 @@
 package entities;
 
-enum Situacao {
-    DISPONIVEL,
-    EMPRESTADO,
-    MANUTENCAO;
-}
 
 public class Objeto {
-    private int CODIGO;
+    private Integer CODIGO;
     private String NOME;
-    private String TIPO;
-    private Situacao SITUACAO = Situacao.DISPONIVEL;
+    private Tipo_Obj TIPO;
+    private String SITUACAO = "DISPONIVEL";
 
-    public Objeto(int CODIGO, String NOME, String TIPO) {
+    public Objeto(String NOME, Tipo_Obj TIPO) {
+        this.NOME = NOME;
+        this.TIPO = TIPO;
+    }
+
+    public Objeto(Integer CODIGO, String NOME, Tipo_Obj TIPO, String SITUACAO) {
         this.CODIGO = CODIGO;
         this.NOME = NOME;
         this.TIPO = TIPO;
+        this.SITUACAO = SITUACAO;
     }
 
-    public Objeto(String NOME, String TIPO) {
-        this.NOME = NOME;
-        this.TIPO = TIPO;
+    public Objeto(){
+        CODIGO = null;
+        NOME = null;
+        TIPO = null;
+        SITUACAO = null;
     }
 
-    public int getCODIGO() {
+    public Integer getCODIGO() {
         return CODIGO;
     }
 
@@ -31,15 +34,28 @@ public class Objeto {
         return NOME;
     }
 
-    public String getTIPO() {
+    public void setNOME(String nome){
+        this.NOME = nome;
+    }
+
+    public Tipo_Obj getTIPO() {
         return TIPO;
     }
 
-    public Situacao getSITUACAO() {
+    public void setTIPO(Tipo_Obj tipo){
+        this.TIPO = tipo;
+    }
+
+    public String getSITUACAO() {
         return SITUACAO;
     }
 
-    public void setSITUACAO(Situacao SITUACAO) {
+    public void setSITUACAO(String SITUACAO) {
         this.SITUACAO = SITUACAO;
+    }
+
+    @Override
+    public String toString() {
+        return "Objeto: "+NOME+", código "+CODIGO+", tipo: "+TIPO.getTIPO()+", situação atual: "+SITUACAO;
     }
 }

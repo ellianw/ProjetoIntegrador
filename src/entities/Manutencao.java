@@ -1,25 +1,27 @@
 package entities;
 
 public class Manutencao {
-    private int CODIGO;
+    private Integer CODIGO;
     private Objeto OBJETO;
     private boolean ATIVO = true;
 
-    public Manutencao(Objeto OBJETO, boolean SITUACAO) {
+    public Manutencao(Integer CODIGO, Objeto OBJETO, boolean ATIVO) {
+        this.CODIGO = CODIGO;
         this.OBJETO = OBJETO;
-        this.ATIVO = SITUACAO;
-        OBJETO.setSITUACAO(Situacao.MANUTENCAO);
-    }
-    public Manutencao(Objeto OBJETO) {
-        this.OBJETO = OBJETO;
-        OBJETO.setSITUACAO(Situacao.MANUTENCAO);
-    }
-    public Manutencao(String NomeObjeto) {
-        this.OBJETO = new Objeto(NomeObjeto,"");
-        OBJETO.setSITUACAO(Situacao.MANUTENCAO);
+        this.ATIVO = ATIVO;
     }
 
-    public int getCODIGO() {
+    public Manutencao(Objeto OBJETO) {
+        this.OBJETO = OBJETO;
+        OBJETO.setSITUACAO("MANUTENCAO");
+    }
+
+    public Manutencao(){
+        CODIGO = null;
+        OBJETO = null;
+    }
+
+    public Integer getCODIGO() {
         return CODIGO;
     }
 
@@ -29,5 +31,16 @@ public class Manutencao {
 
     public boolean isATIVO() {
         return ATIVO;
+    }
+
+    public void setEstado(boolean estado) {
+        this.ATIVO = estado;
+    }
+
+    @Override
+    public String toString() {
+        String estado = "inativa";
+        if (ATIVO) estado = "ativa";
+        return "Manutenção nº "+CODIGO+", objeto: "+OBJETO.getNOME()+", situação atual: "+estado;
     }
 }
