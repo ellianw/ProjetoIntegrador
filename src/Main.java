@@ -12,8 +12,8 @@ public class Main {
                 "--------------------------------------\n" +
                 "1 - Cadastrar\n" +
                 "2 - Consultar\n" +
-                "3 - Alterar (Não disponível)\n" +
-                "4 - Excluir (Não disponível)\n" +
+                "3 - Alterar\n" +
+                "4 - Excluir\n" +
                 "5 - Realizar empréstimo (Não disponível)\n" +
                 "6 - Relatótios (Não disponível)\n" +
                 "7 - Sair\n"+

@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Alterar {
     static Scanner sc = new Scanner(System.in);
-    static Connection conn = null;
+    static Connection conn;
     public static void menu(Connection conexao){
         conn = conexao;
         String primTexto = "\nSistema de empréstimos de objetos\n" +
@@ -45,7 +45,7 @@ public class Alterar {
 
     public static void alterarPessoa(){
         PessoaDAO dao = new PessoaDAO(conn);
-        Pessoa pessoa = Consulta.consultaPessoa();
+        Pessoa pessoa = Consulta.consultaPessoa(conn);
         if (pessoa == null) return;
         System.out.println("Insira o nome para alteração:");
         String nome = sc.nextLine();
@@ -54,13 +54,17 @@ public class Alterar {
             nome = sc.nextLine();
         }
         if (nome.equals("sair")) return;
+        if (dao.pessoaExiste(nome)) {
+            System.out.println("Uma pessoa com esse nome já existe!");
+            return;
+        }
         pessoa.setNOME(nome.toUpperCase());
         dao.atualizarPessoa(pessoa);
     }
 
     public static void alterarTipoObj(){
         Tipo_ObjDAO dao = new Tipo_ObjDAO(conn);
-        Tipo_Obj tipoObj = Consulta.consultaTipoObj();
+        Tipo_Obj tipoObj = Consulta.consultaTipoObj(conn);
         if (tipoObj ==null) return;
         System.out.println("Insira o nome para alteração:");
         String nome = sc.nextLine();
@@ -69,13 +73,17 @@ public class Alterar {
             nome = sc.nextLine();
         }
         if (nome.equals("sair")) return;
+        if (!dao.tipoInvalido(nome)) {
+            System.out.println("Esse tipo de objeto já existe!");
+            return;
+        }
         tipoObj.setTIPO(nome);
         dao.atualizarTipo(tipoObj);
     }
 
     public static void alterarObjeto(){
         ObjetoDAO dao = new ObjetoDAO(conn);
-        Objeto obj = Consulta.consultaObjeto();
+        Objeto obj = Consulta.consultaObjeto(conn);
         if (obj ==null) return;
         System.out.println("Insira o nome para alteração:");
         String nome = sc.nextLine();
@@ -84,8 +92,8 @@ public class Alterar {
             nome = sc.nextLine();
         }
         if (nome.equals("sair")) return;
-        System.out.println("Insira o tipo para alteração:");
-        Tipo_Obj tipo = Consulta.consultaTipoObj();
+        //System.out.println("Insira o tipo para alteração:");
+        Tipo_Obj tipo = Consulta.consultaTipoObj(conn);
         if (tipo==null) return;
         obj.setNOME(nome);
         obj.setTIPO(tipo);
@@ -95,7 +103,7 @@ public class Alterar {
     public static void alterarManutencao(){
         ManutencaoDAO dao = new ManutencaoDAO(conn);
         ObjetoDAO objdao = new ObjetoDAO(conn);
-        Manutencao manutencao = Consulta.consultaManutencao();
+        Manutencao manutencao = Consulta.consultaManutencao(conn);
         if (manutencao ==null) return;
         System.out.println("Deseja alterar o estado da manutenção?(Sim/Não)");
         String estado = sc.nextLine();

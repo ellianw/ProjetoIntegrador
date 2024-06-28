@@ -102,9 +102,6 @@ public class Tipo_ObjDAO {
     }
 
     public void atualizarTipo(Tipo_Obj tipoobj){
-        if (tipoInvalido(tipoobj.getTIPO())) {
-            return;
-        }
         String sql = "UPDATE TIPO_OBJETO SET NOME = ? WHERE CODIGO = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);

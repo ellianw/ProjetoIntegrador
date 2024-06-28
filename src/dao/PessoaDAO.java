@@ -54,9 +54,6 @@ public class PessoaDAO {
     }
 
     public void atualizarPessoa(Pessoa pessoa){
-        if (!pessoaExiste(pessoa.getNOME())) {
-            return;
-        }
         String sql = "UPDATE PESSOA SET NOME = ? WHERE CODIGO = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);

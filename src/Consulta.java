@@ -23,18 +23,18 @@ public class Consulta {
         while (opcao !=5){
             switch (opcao){
                 case 1:
-                    consultaPessoa();
+                    consultaPessoa(conn);
                     break;
                 case 2:
                     System.out.println("\nConsulta de tipo de objeto:");
-                    consultaTipoObj();
+                    consultaTipoObj(conn);
                     break;
                 case 3:
-                    consultaObjeto();
+                    consultaObjeto(conn);
                     break;
                 case 4:
                     System.out.println("\nConsulta de manutenção:");
-                    consultaManutencao();
+                    consultaManutencao(conn);
                     break;
                 default:
                     System.out.println("\nNúmero inválido! Tente novamente.\n\n");
@@ -43,7 +43,7 @@ public class Consulta {
             opcao = sc.nextInt();
         }
     }
-    public static Pessoa consultaPessoa(){
+    public static Pessoa consultaPessoa(Connection conn){
         PessoaDAO dao = new PessoaDAO(conn);
         System.out.println("\nConsulta de pessoa:\nInsira o nome:");
         String nome = sc.nextLine();
@@ -60,7 +60,7 @@ public class Consulta {
         System.out.println(pessoa.toString());
         return pessoa;
     }
-    public static Tipo_Obj consultaTipoObj(){
+    public static Tipo_Obj consultaTipoObj(Connection conn){
         Tipo_ObjDAO dao = new Tipo_ObjDAO(conn);
         System.out.println("\nInsira o tipo:");
         String tipo = sc.nextLine();
@@ -78,7 +78,7 @@ public class Consulta {
         return tipoobj;
     }
 
-    public static Objeto consultaObjeto(){
+    public static Objeto consultaObjeto(Connection conn){
         ObjetoDAO dao = new ObjetoDAO(conn);
         System.out.println("\nConsulta de objeto:\nInsira o objeto:");
         String objNome = sc.nextLine();
@@ -95,7 +95,7 @@ public class Consulta {
         System.out.println(obj.toString());
         return obj;
     }
-    public static Manutencao consultaManutencao(){
+    public static Manutencao consultaManutencao(Connection conn){
         ObjetoDAO objdao = new ObjetoDAO(conn);
         ManutencaoDAO dao = new ManutencaoDAO(conn);
         System.out.println("\nInsira o objeto:");

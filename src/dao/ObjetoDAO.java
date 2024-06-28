@@ -87,12 +87,13 @@ public class ObjetoDAO {
     }
 
     public void atualizarObjeto(Objeto obj){
-        String sql = "UPDATE OBJETO SET NOME = ?, COD_TIPO_OBJETO = 1 WHERE CODIGO = ?";
+        String sql = "UPDATE OBJETO SET NOME = ?, COD_TIPO_OBJETO = ?, SITUACAO = ? WHERE CODIGO = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,obj.getNOME().toUpperCase());
             stmt.setInt(2,obj.getTIPO().getCODIGO());
-            stmt.setInt(3,obj.getCODIGO());
+            stmt.setString(3,obj.getSITUACAO());
+            stmt.setInt(4,obj.getCODIGO());
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

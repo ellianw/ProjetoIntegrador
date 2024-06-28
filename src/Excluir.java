@@ -44,9 +44,9 @@ public class Excluir {
 
     public static void excluirPessoa(){
         PessoaDAO dao = new PessoaDAO(conn);
-        Pessoa pessoa = Consulta.consultaPessoa();
+        Pessoa pessoa = Consulta.consultaPessoa(conn);
         if (pessoa == null) return;
-        System.out.println("Confirma a exclusão de "+pessoa.getNOME()+"?\nEssa ação deletará juntamente todos os registros de empréstimoss registrados para essa pessoa e não pode ser desfeita!(Sim/Nao)");
+        System.out.println("Confirma a exclusão de "+pessoa.getNOME()+"?\nEssa ação deletará juntamente todos os registros de empréstimos registrados para essa pessoa e não pode ser desfeita!(Sim/Nao)");
         if(exclusaoNegada()) return;
         dao.excluirPessoa(pessoa);
         System.out.println("Pessoa excluida!");
@@ -54,7 +54,7 @@ public class Excluir {
 
     public static void excluirTipoObj(){
         Tipo_ObjDAO dao = new Tipo_ObjDAO(conn);
-        Tipo_Obj tipoObj = Consulta.consultaTipoObj();
+        Tipo_Obj tipoObj = Consulta.consultaTipoObj(conn);
         if (tipoObj ==null) return;
         System.out.println("Confirma a exclusão de "+tipoObj.getTIPO()+"?\nEssa ação deletará juntamente todos os registros de objetos registrados com esse tipo e não pode ser desfeita!(Sim/Nao)");
         if(exclusaoNegada()) return;
@@ -64,27 +64,33 @@ public class Excluir {
 
     public static void excluirObjeto(){
         ObjetoDAO dao = new ObjetoDAO(conn);
-        Objeto obj = Consulta.consultaObjeto();
+        Objeto obj = Consulta.consultaObjeto(conn);
         if (obj ==null) return;
         System.out.println("Confirma a exclusão de "+ obj.getNOME()+"?\nEssa ação deletará juntamente todos os registros de manutenção registrados com esse objeto e não pode ser desfeita!(Sim/Nao)");
         if(exclusaoNegada()) return;
         dao.excluirObjeto(obj);
-        System.out.println("Tipo de objeto excluido!");
+        System.out.println("Objeto excluido!");
     }
 
     public static void excluirManutencao(){
         ManutencaoDAO dao = new ManutencaoDAO(conn);
-        Manutencao manutencao = Consulta.consultaManutencao();
+        Manutencao manutencao = Consulta.consultaManutencao(conn);
+        ObjetoDAO objdao = new ObjetoDAO(conn);
         if (manutencao ==null) return;
         System.out.println("Confirma a exclusão de "+ manutencao.getOBJETO().getNOME()+"?\nEssa ação não pode ser desfeita!(Sim/Nao)");
         if(exclusaoNegada()) return;
         manutencao.getOBJETO().setSITUACAO("DISPONIVEL");
         dao.excluirManutencao(manutencao);
-        System.out.println("Tipo de objeto excluido!");
+        objdao.atualizarObjeto(manutencao.getOBJETO());;
+        System.out.println("Manutenção excluida!");
     }
 
     public static boolean exclusaoNegada(){
         String estado = sc.nextLine();
+        while(estado.isEmpty()){
+            System.out.println("Campo vazio! Use 'sair' ou insira uma opção válida:");
+            estado = sc.nextLine();
+        }
         estado = estado.toUpperCase();
         if (estado.equals("N") || estado.equals("NAO")) return true;
         if (!estado.equals("S") && !estado.equals("SIM")) {
