@@ -3,12 +3,12 @@ package entities;
 public class Manutencao {
     private Integer CODIGO;
     private Objeto OBJETO;
-    private boolean ATIVO = true;
+    private String SITUACAO = "ATIVO";
 
-    public Manutencao(Integer CODIGO, Objeto OBJETO, boolean ATIVO) {
+    public Manutencao(Integer CODIGO, Objeto OBJETO, String ATIVO) {
         this.CODIGO = CODIGO;
         this.OBJETO = OBJETO;
-        this.ATIVO = ATIVO;
+        this.SITUACAO = ATIVO;
     }
 
     public Manutencao(Objeto OBJETO) {
@@ -29,18 +29,16 @@ public class Manutencao {
         return OBJETO;
     }
 
-    public boolean isATIVO() {
-        return ATIVO;
+    public String getSITUACAO() {
+        return SITUACAO;
     }
 
-    public void setEstado(boolean estado) {
-        this.ATIVO = estado;
+    public void setEstado(String estado) {
+        this.SITUACAO = estado.toUpperCase();
     }
 
     @Override
     public String toString() {
-        String estado = "inativa";
-        if (ATIVO) estado = "ativa";
-        return "Manutenção nº "+CODIGO+", objeto: "+OBJETO.getNOME()+", situação atual: "+estado;
+        return "Manutenção nº "+CODIGO+", objeto: "+OBJETO.getNOME()+", situação atual: "+SITUACAO;
     }
 }

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ObjetoDAO {
     Connection conn;
@@ -59,18 +60,6 @@ public class ObjetoDAO {
         return false;
     }
 
-    public void atualizarSituacao(Objeto obj){
-        String sql = "UPDATE OBJETO SET SITUACAO = ? WHERE NOME = ?";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1,obj.getSITUACAO().toUpperCase());
-            stmt.setString(2,obj.getNOME().toUpperCase());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     public Objeto buscaCodigo(Integer codigo){
         String sql = "SELECT CODIGO, NOME, COD_TIPO_OBJETO, SITUACAO FROM OBJETO WHERE CODIGO = ?";
         try {
@@ -109,5 +98,51 @@ public class ObjetoDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public ArrayList<Objeto> buscaPorTipo(int tipo){
+        ArrayList<Objeto> arr = new ArrayList<>();
+        String sql = "SELECT * FROM OBJETO WHERE COD_TIPO_OBJETO = ? ORDER BY NOME";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,tipo);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                arr.add(new Objeto(rs.getInt("CODIGO"),rs.getString("NOME"),tipoDAO.buscaCodigo(rs.getInt("COD_TIPO_OBJETO")),rs.getString("SITUACAO")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return arr;
+    }
+
+    public ArrayList<Objeto> buscaPorSituacao(){
+        ArrayList<Objeto> arr = new ArrayList<>();
+        String sql = "SELECT * FROM OBJETO ORDER BY SITUACAO, NOME";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                arr.add(new Objeto(rs.getInt("CODIGO"),rs.getString("NOME"),tipoDAO.buscaCodigo(rs.getInt("COD_TIPO_OBJETO")),rs.getString("SITUACAO")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return arr;
+    }
+
+    public ArrayList<Objeto> buscaPorNome(){
+        ArrayList<Objeto> arr = new ArrayList<>();
+        String sql = "SELECT * FROM OBJETO ORDER BY NOME";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                arr.add(new Objeto(rs.getInt("CODIGO"),rs.getString("NOME"),tipoDAO.buscaCodigo(rs.getInt("COD_TIPO_OBJETO")),rs.getString("SITUACAO")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return arr;
     }
 }

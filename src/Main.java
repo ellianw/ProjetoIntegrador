@@ -14,8 +14,8 @@ public class Main {
                 "2 - Consultar\n" +
                 "3 - Alterar\n" +
                 "4 - Excluir\n" +
-                "5 - Realizar empréstimo (Não disponível)\n" +
-                "6 - Relatótios (Não disponível)\n" +
+                "5 - Emprestimos\n" +
+                "6 - Relatórios\n" +
                 "7 - Sair\n"+
                 "Escolha a sua opção:";
         System.out.println(primTexto);
@@ -34,10 +34,12 @@ public class Main {
                 case 4:
                     Excluir.menu(conn);
                     break;
-                /*case 5://Código comentado para próxima entrega do trabalho, no código atual poderia ser trocado por um "if"
+                case 5:
+                    Emprestar.menu(conn);
                     break;
                 case 6:
-                    break; */
+                    Relatorio.menu(conn);
+                    break;
                 default:
                     System.out.println("\nNúmero inválido! Tente novamente.\n");
             }
@@ -51,7 +53,7 @@ public class Main {
     public static void conectardb(){
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:database.db");
-            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"EMPRESTIMO\" (\"CODIGO\" INTEGER, \"COD_OBJETO\" INTEGER, \"COD_PESSOA\" INTEGER, \"ESTADO\" TEXT, FOREIGN KEY(\"COD_PESSOA\") REFERENCES \"PESSOA\"(\"CODIGO\") ON DELETE CASCADE, FOREIGN KEY(\"COD_OBJETO\") REFERENCES \"OBJETO\"(\"CODIGO\") ON DELETE CASCADE, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
+            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"EMPRESTIMO\" (\"CODIGO\" INTEGER, \"COD_OBJETO\" INTEGER, \"COD_PESSOA\" INTEGER, \"DATA_EMP\" TEXT, \"ESTADO\" TEXT, FOREIGN KEY(\"COD_PESSOA\") REFERENCES \"PESSOA\"(\"CODIGO\") ON DELETE CASCADE, FOREIGN KEY(\"COD_OBJETO\") REFERENCES \"OBJETO\"(\"CODIGO\") ON DELETE CASCADE, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
             conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"MANUTENCAO\" (\"CODIGO\" INTEGER, \"OBJETO\" INTEGER, \"ATIVO\" TEXT, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
             conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"OBJETO\" (\"CODIGO\"\tINTEGER, \"NOME\"\tTEXT, \"COD_TIPO_OBJETO\"\tINTEGER, \"SITUACAO\" TEXT, FOREIGN KEY(\"COD_TIPO_OBJETO\") REFERENCES \"TIPO_OBJETO\"(\"CODIGO\") ON DELETE CASCADE, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");
             conn.createStatement().execute("CREATE TABLE IF NOT EXISTS \"PESSOA\" (\"CODIGO\"\tINTEGER, \"NOME\"\tTEXT, PRIMARY KEY(\"CODIGO\" AUTOINCREMENT))");

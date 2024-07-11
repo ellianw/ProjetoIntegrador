@@ -23,15 +23,23 @@ public class Excluir {
         while (opcao !=5){
             switch (opcao){
                 case 1:
+                    System.out.println("Insira a pessoa a ser excluida");
+                    sc.nextLine();
                     excluirPessoa();
                     break;
                 case 2:
+                    System.out.println("Insira o tipo de objeto a ser excluido");
+                    sc.nextLine();
                     excluirTipoObj();
                     break;
                 case 3:
+                    System.out.println("Insira o objeto a ser excluido");
+                    sc.nextLine();
                     excluirObjeto();
                     break;
                 case 4:
+                    System.out.println("Insira o objeto da manutencao a ser excluida");
+                    sc.nextLine();
                     excluirManutencao();
                     break;
                 default:
@@ -80,7 +88,7 @@ public class Excluir {
         System.out.println("Confirma a exclusão de "+ manutencao.getOBJETO().getNOME()+"?\nEssa ação não pode ser desfeita!(Sim/Nao)");
         if(exclusaoNegada()) return;
         manutencao.getOBJETO().setSITUACAO("DISPONIVEL");
-        dao.excluirManutencao(manutencao);
+        dao.excluir(manutencao);
         objdao.atualizarObjeto(manutencao.getOBJETO());;
         System.out.println("Manutenção excluida!");
     }

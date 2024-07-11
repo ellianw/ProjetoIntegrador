@@ -23,17 +23,23 @@ public class Consulta {
         while (opcao !=5){
             switch (opcao){
                 case 1:
+                    System.out.println("\nConsulta de pessoa:\nInsira o nome:");
+                    sc.nextLine();
                     consultaPessoa(conn);
                     break;
                 case 2:
-                    System.out.println("\nConsulta de tipo de objeto:");
+                    System.out.println("\nConsulta de tipo de objeto:\nInsira o tipo:");
+                    sc.nextLine();
                     consultaTipoObj(conn);
                     break;
                 case 3:
+                    System.out.println("\nConsulta de objeto:\nInsira o objeto:");
+                    sc.nextLine();
                     consultaObjeto(conn);
                     break;
                 case 4:
-                    System.out.println("\nConsulta de manutenção:");
+                    System.out.println("\nConsulta de manutenção:\nInsira o objeto:");
+                    sc.nextLine();
                     consultaManutencao(conn);
                     break;
                 default:
@@ -45,7 +51,6 @@ public class Consulta {
     }
     public static Pessoa consultaPessoa(Connection conn){
         PessoaDAO dao = new PessoaDAO(conn);
-        System.out.println("\nConsulta de pessoa:\nInsira o nome:");
         String nome = sc.nextLine();
         while(nome.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o nome:");
@@ -62,7 +67,7 @@ public class Consulta {
     }
     public static Tipo_Obj consultaTipoObj(Connection conn){
         Tipo_ObjDAO dao = new Tipo_ObjDAO(conn);
-        System.out.println("\nInsira o tipo:");
+        //sc.nextLine();
         String tipo = sc.nextLine();
         while(tipo.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o tipo:");
@@ -80,7 +85,7 @@ public class Consulta {
 
     public static Objeto consultaObjeto(Connection conn){
         ObjetoDAO dao = new ObjetoDAO(conn);
-        System.out.println("\nConsulta de objeto:\nInsira o objeto:");
+        //sc.nextLine();
         String objNome = sc.nextLine();
         while(objNome.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o objeto:");
@@ -98,7 +103,7 @@ public class Consulta {
     public static Manutencao consultaManutencao(Connection conn){
         ObjetoDAO objdao = new ObjetoDAO(conn);
         ManutencaoDAO dao = new ManutencaoDAO(conn);
-        System.out.println("\nInsira o objeto:");
+        //sc.nextLine();
         String objNome = sc.nextLine();
         while(objNome.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o objeto:");

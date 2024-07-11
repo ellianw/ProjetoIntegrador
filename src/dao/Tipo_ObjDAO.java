@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Tipo_ObjDAO {
     Connection conn;
@@ -122,5 +123,20 @@ public class Tipo_ObjDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public ArrayList<Tipo_Obj> buscaTodos(){
+        ArrayList<Tipo_Obj> arr = new ArrayList<>();
+        String sql = "SELECT * FROM TIPO_OBJETO";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                arr.add(new Tipo_Obj(rs.getInt("CODIGO"),rs.getString("NOME")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return arr;
     }
 }

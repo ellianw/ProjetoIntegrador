@@ -1,9 +1,9 @@
 package dao;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import entities.Pessoa;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class PessoaDAO {
     Connection conn;
@@ -25,6 +25,21 @@ public class PessoaDAO {
             System.out.println(e.getMessage());
         }
         return new Pessoa(nomebusca);
+    }
+
+    public Pessoa buscaCodigo(int codigo){
+        String sql = "SELECT CODIGO, NOME FROM PESSOA WHERE CODIGO = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,codigo);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.isBeforeFirst()){
+                return new Pessoa(rs.getInt("CODIGO"),rs.getString("NOME"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return new Pessoa();
     }
 
     public void salvar(Pessoa pessoa){
@@ -74,5 +89,20 @@ public class PessoaDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public ArrayList<Pessoa> buscaTodos(){
+        ArrayList<Pessoa> arr = new ArrayList<>();
+        String sql = "SELECT * FROM PESSOA";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                arr.add(new Pessoa(rs.getInt("CODIGO"),rs.getString("NOME")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return arr;
     }
 }

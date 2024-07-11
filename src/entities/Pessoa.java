@@ -4,6 +4,10 @@ public class Pessoa {
     private Integer CODIGO = null;
     private String NOME;
 
+    public Pessoa(){
+
+    }
+
     public Pessoa(String NOME) {
         this.NOME = NOME;
     }

@@ -44,6 +44,7 @@ public class Cadastro {
     public static void cadastroPessoa(){
         PessoaDAO dao = new PessoaDAO(conn);
         System.out.println("\nInclusão de pessoa:\nInsira o nome:");
+        sc.nextLine();
         String nome = sc.nextLine();
         while(nome.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o nome:");
@@ -62,6 +63,7 @@ public class Cadastro {
     public static void cadastroTipoObj(){
         Tipo_ObjDAO dao = new Tipo_ObjDAO(conn);
         System.out.println("\nInclusão de tipo de objeto:\nInsira o tipo:");
+        sc.nextLine();
         String tipo = sc.nextLine();
         while(tipo.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o tipo:");
@@ -81,6 +83,7 @@ public class Cadastro {
         Tipo_ObjDAO tipodao = new Tipo_ObjDAO(conn);
         ObjetoDAO dao = new ObjetoDAO(conn);
         System.out.println("\nInclusão de objeto:\nInsira o objeto:");
+        sc.nextLine();
         String objNome = sc.nextLine();
         while(objNome.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o objeto:");
@@ -104,12 +107,14 @@ public class Cadastro {
         }
         Objeto obj = new Objeto(objNome,tipodao.buscaNome(objTipo));
         dao.salvar(obj);
+        System.out.println("Cadastro concluído: "+obj.getNOME());
     }
 
     public static void cadastroManutencao(){
         ObjetoDAO objdao = new ObjetoDAO(conn);
         ManutencaoDAO dao = new ManutencaoDAO(conn);
         System.out.println("\nInclusão de manutenção:\nInsira o objeto:");
+        sc.nextLine();
         String objNome = sc.nextLine();
         while(objNome.isEmpty()){
             System.out.println("Campo vazio! Use 'sair' ou insira o objeto:");
@@ -125,7 +130,7 @@ public class Cadastro {
             return;
         }
         obj.setSITUACAO("MANUTENCAO");
-        objdao.atualizarSituacao(obj);
+        objdao.atualizarObjeto(obj);
         Manutencao manutencao = new Manutencao(obj);
         dao.salvar(manutencao);
         System.out.println("Situação do objeto "+obj.getNOME()+" definida como MANUTENCAO");
